@@ -1,0 +1,48 @@
+name: CI/CD Workflow
+
+on:
+    push:
+      branches:
+        - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: git checkout
+              uses: actions/checkout@v2
+
+            - name: setup python 
+              uses: actions/setup-python@v2
+              with:
+                python-version: '3.8'
+            
+            - name: Install dependencies
+              run: |
+                python -m venv venv
+                source venv/bin/activate
+                pip install --upgrade pip
+                pip install -r 
+
+            - name: Build 
+              run: |
+                source venv/bin/activate
+                python test.py
+
+            - name: docker Login
+              uses: docker/login-action@v2
+              with:
+                username: ${{ secrets.DOCKER_USERNAME }}  # Set your Docker Hub username in GitHub secrets
+                password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build Docker image
+              run: |
+                  docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_PASSWORD }}:latest .  # Build the Docker image
+                  
+              # Step 5: Push the Docker image to Docker Hub (or GitHub Container Registry)
+            - name: Push Docker image
+              run: |
+                  docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_PASSWORD }}:latest  # Push to Docker Hub
+        
+                
