@@ -32,16 +32,16 @@ jobs:
             - name: docker Login
               uses: docker/login-action@v2
               with:
-                username: ${{ secrets.DOCKER_USERNAME }}  # Set your Docker Hub username in GitHub secrets
-                password: ${{ secrets.DOCKER_PASSWORD }}
+                username: sriram789  # Set your Docker Hub username in GitHub secrets
+                password: youcantguess
 
             - name: Build Docker image
               run: |
-                  docker build -t ${{ secrets.DOCKER_USERNAME }}/hello:v1 .  # Build the Docker image
+                  docker build -t sriram789/hello:v1 .  # Build the Docker image
                   
               # Step 5: Push the Docker image to Docker Hub (or GitHub Container Registry)
             - name: Push Docker image
               run: |
-                  docker push ${{ secrets.DOCKER_USERNAME }}/hello:v1  # Push to Docker Hub
+                  docker push sriram789/hello:v1  # Push to Docker Hub
         
                 
